@@ -61,6 +61,7 @@ This is a complex multi-phase project. Initial implementation includes:
 | 2026-03-03 | Initial implementation: landing page, skill structure, sample SKILL.md |
 | 2026-03-03 | Add database schema, API routes, and demo page |
 | 2026-03-03 | Fix database configuration for build without environment variables |
+| 2026-03-03 | Add placeholder migration script for build without DB |
 
 ## Next Steps (Future Phases)
 
