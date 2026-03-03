@@ -112,6 +112,7 @@ export default function Home() {
             <a href="#suites" className="hover:text-white transition-colors">Skill Suites</a>
             <a href="#business" className="hover:text-white transition-colors">Business Models</a>
             <a href="#attribution" className="hover:text-white transition-colors">Attribution</a>
+            <a href="/demo" className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors">Try Demo</a>
           </div>
         </nav>
 
@@ -407,10 +408,17 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
+              href="/demo"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-stone-900 font-semibold rounded-lg hover:bg-stone-100 transition-colors"
+            >
+              <Sparkles className="w-5 h-5" />
+              Try Demo
+            </a>
+            <a
               href="https://github.com/homebase-civic-lab"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-stone-900 font-semibold rounded-lg hover:bg-stone-100 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900/30 text-white font-semibold rounded-lg hover:bg-stone-900/50 transition-colors backdrop-blur-sm"
             >
               <Globe className="w-5 h-5" />
               View on GitHub

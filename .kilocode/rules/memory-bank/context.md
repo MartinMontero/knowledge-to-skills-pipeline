@@ -2,9 +2,9 @@
 
 ## Current State
 
-**Project Status**: ✅ Implementation Started
+**Project Status**: ✅ Backend Implemented
 
-The Knowledge-to-Skills Pipeline project is being built to convert published knowledge (books, guides, toolkits) into composable AI agent skills, delivered through Onyx + Maple AI with IP attribution via Nostr Lightning payments.
+The Knowledge-to-Skills Pipeline now has database schema, API routes, and a working demo interface. The system converts published knowledge (books, guides, toolkits) into composable AI agent skills, delivered through Onyx + Maple AI with IP attribution via Nostr Lightning payments.
 
 ## Recently Completed
 
@@ -18,6 +18,9 @@ The Knowledge-to-Skills Pipeline project is being built to convert published kno
 - [x] Create suite manifest (_suite.md)
 - [x] Pass typecheck and lint validation
 - [x] Add lucide-react dependency for icons
+- [x] Add database with Drizzle ORM (users, skills, payments, invocations)
+- [x] Create API routes for skills (GET /api/skills, POST /api/skills/invoke)
+- [x] Build demo page at /demo with skill invocation interface
 
 ## Current Structure
 
