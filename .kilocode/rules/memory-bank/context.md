@@ -1,87 +1,70 @@
-# Active Context: Next.js Starter Template
+# Active Context: Knowledge-to-Skills Pipeline
 
 ## Current State
 
-**Template Status**: ✅ Ready for development
+**Project Status**: ✅ Implementation Started
 
-The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. It's ready for AI-assisted expansion to build any type of application.
+The Knowledge-to-Skills Pipeline project is being built to convert published knowledge (books, guides, toolkits) into composable AI agent skills, delivered through Onyx + Maple AI with IP attribution via Nostr Lightning payments.
 
 ## Recently Completed
 
-- [x] Base Next.js 16 setup with App Router
-- [x] TypeScript configuration with strict mode
-- [x] Tailwind CSS 4 integration
-- [x] ESLint configuration
-- [x] Memory bank documentation
-- [x] Recipe system for common features
+- [x] Analyze the Knowledge-to-Skills Pipeline specification document
+- [x] Create landing page presenting the pipeline architecture
+- [x] Build skill suite showcase section with Beautiful Trouble as reference
+- [x] Add business model explanation (SkillStream & SkillZap)
+- [x] Implement skill manifest structure and SKILL.md template
+- [x] Create sample SKILL.md (culture-jamming from Beautiful Trouble)
+- [x] Create skill index registry (src/skills/index.json)
+- [x] Create suite manifest (_suite.md)
+- [x] Pass typecheck and lint validation
+- [x] Add lucide-react dependency for icons
 
 ## Current Structure
 
 | File/Directory | Purpose | Status |
 |----------------|---------|--------|
-| `src/app/page.tsx` | Home page | ✅ Ready |
-| `src/app/layout.tsx` | Root layout | ✅ Ready |
-| `src/app/globals.css` | Global styles | ✅ Ready |
-| `.kilocode/` | AI context & recipes | ✅ Ready |
+| `src/app/page.tsx` | Landing page with pipeline overview | ✅ Built |
+| `src/skills/index.json` | Skill registry with suite metadata | ✅ Built |
+| `src/skills/beautiful-trouble/_suite.md` | Suite manifest with composability | ✅ Built |
+| `src/skills/beautiful-trouble/tactics/culture-jamming.md` | Sample SKILL.md template | ✅ Built |
 
 ## Current Focus
 
-The template is ready. Next steps depend on user requirements:
+This is a complex multi-phase project. Initial implementation includes:
+1. Landing page showcasing the pipeline
+2. Sample skill structure (Beautiful Trouble reference implementation)
+3. Skill registry and manifest system
 
-1. What type of application to build
-2. What features are needed
-3. Design/branding preferences
+## Key Concepts Implemented
 
-## Quick Start Guide
+### Technology Stack
+- **Onyx**: Nostr-native encrypted knowledge vault
+- **Maple AI**: Privacy-first inference engine
+- **Nostr**: Decentralized relay network
+- **Lightning**: Native micropayments (Zaps)
 
-### To add a new page:
+### Business Models
+- **SkillStream**: Subscription + Revenue Share ($12/month)
+- **SkillZap**: Pay-per-invocation (25-500 sats)
 
-Create a file at `src/app/[route]/page.tsx`:
-```tsx
-export default function NewPage() {
-  return <div>New page content</div>;
-}
-```
-
-### To add components:
-
-Create `src/components/` directory and add components:
-```tsx
-// src/components/ui/Button.tsx
-export function Button({ children }: { children: React.ReactNode }) {
-  return <button className="px-4 py-2 bg-blue-600 text-white rounded">{children}</button>;
-}
-```
-
-### To add a database:
-
-Follow `.kilocode/recipes/add-database.md`
-
-### To add API routes:
-
-Create `src/app/api/[route]/route.ts`:
-```tsx
-import { NextResponse } from "next/server";
-
-export async function GET() {
-  return NextResponse.json({ message: "Hello" });
-}
-```
-
-## Available Recipes
-
-| Recipe | File | Use Case |
-|--------|------|----------|
-| Add Database | `.kilocode/recipes/add-database.md` | Data persistence with Drizzle + SQLite |
-
-## Pending Improvements
-
-- [ ] Add more recipes (auth, email, etc.)
-- [ ] Add example components
-- [ ] Add testing setup recipe
+### Attribution System
+- Revenue split: 70% IP owner, 20% skill author, 10% platform
+- NIP-57 Zap receipts for transparent payments
 
 ## Session History
 
 | Date | Changes |
 |------|---------|
-| Initial | Template created with base setup |
+| 2026-03-03 | Initial implementation: landing page, skill structure, sample SKILL.md |
+
+## Next Steps (Future Phases)
+
+From the specification document, the full roadmap includes:
+- Phase 1: Foundation (Onyx fork, Maple integration)
+- Phase 2: Payment integration (NIP-57 Zaps, revenue splits)
+- Phase 3: Scale pipeline (10+ sources)
+- Phase 4: Ecosystem (community submissions)
+
+## Dependencies Added
+
+- `lucide-react` for icon components

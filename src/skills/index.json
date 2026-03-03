@@ -1,0 +1,69 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-02-23T00:00:00Z",
+  "suites": [
+    {
+      "slug": "beautiful-trouble",
+      "name": "Beautiful Trouble",
+      "source": "Beautiful Trouble: A Toolbox for Revolution",
+      "authors": ["Andrew Boyd", "Dave Oswald Mitchell"],
+      "license": "CC-BY-SA-4.0",
+      "ip_owner_npub": "npub1_beautifultrouble_example",
+      "ip_owner_lightning": "beautifultrouble@getalby.com",
+      "status": "published",
+      "skills": {
+        "tactics": 12,
+        "principles": 6,
+        "theories": 6
+      },
+      "total_skills": 24,
+      "tags": ["activism", "direct-action", "creative-tactics", "organizing"]
+    },
+    {
+      "slug": "rules-for-radicals",
+      "name": "Rules for Radicals",
+      "source": "Rules for Radicals: A Pragmatic Primer for Realistic Radicals",
+      "authors": ["Saul Alinsky"],
+      "license": "Standard Copyright",
+      "ip_owner_npub": "npub1_alinsky_estate_example",
+      "ip_owner_lightning": "alinsky@getalby.com",
+      "status": "phase-1",
+      "skills": {
+        "tactics": 5,
+        "principles": 8,
+        "theories": 2
+      },
+      "total_skills": 15,
+      "tags": ["organizing", "strategy", "community"]
+    },
+    {
+      "slug": "facilitators-guide",
+      "name": "Facilitator's Guide to Participatory Decision-Making",
+      "source": "The Facilitator's Guide to Participatory Decision-Making",
+      "authors": ["Sam Kaner"],
+      "license": "Standard Copyright",
+      "ip_owner_npub": "npub1_kaner_example",
+      "ip_owner_lightning": "facilitators@getalby.com",
+      "status": "phase-1",
+      "skills": {
+        "process": 18
+      },
+      "total_skills": 18,
+      "tags": ["facilitation", "process", "decision-making", "meetings"]
+    }
+  ],
+  "attribution": {
+    "default_split": {
+      "ip_owner": 70,
+      "skill_author": 20,
+      "platform": 10
+    },
+    "license_compatibility": {
+      "CC-BY-SA-4.0": { "revenue_share": true, "derivative_license": "CC-BY-SA-4.0" },
+      "CC-BY-4.0": { "revenue_share": true, "derivative_license": "any" },
+      "CC-BY-NC-4.0": { "revenue_share": false, "free_tier_only": true },
+      "public_domain": { "revenue_share": true, "derivative_license": "any" },
+      "all-rights-reserved": { "revenue_share": true, "requires_agreement": true }
+    }
+  }
+}
