@@ -1,143 +1,75 @@
-# Technical Context: Next.js Starter Template
+# Technical Context: Knowledge-to-Skills Pipeline
 
 ## Technology Stack
 
-| Technology   | Version | Purpose                         |
-| ------------ | ------- | ------------------------------- |
-| Next.js      | 16.x    | React framework with App Router |
-| React        | 19.x    | UI library                      |
-| TypeScript   | 5.9.x   | Type-safe JavaScript            |
-| Tailwind CSS | 4.x     | Utility-first CSS               |
-| Bun          | Latest  | Package manager & runtime       |
+| Technology | Purpose |
+| --- | --- |
+| Next.js 16 (App Router) | React framework, API routes |
+| React 19 | UI |
+| TypeScript 5.9 (strict) | Type safety |
+| Tailwind CSS 4 | Styling |
+| Bun | Package manager, runtime, test runner |
+| @anthropic-ai/sdk | LLM execution (default `claude-opus-4-8`) |
+| Drizzle ORM + @libsql/client | Optional libSQL/SQLite persistence |
+| gray-matter | `SKILL.md` frontmatter parsing |
+| react-markdown | Safe markdown rendering (no raw HTML) |
+| zod | Request/config validation |
+| geist | Self-hosted fonts (no build-time Google Fonts fetch) |
 
-## Development Environment
-
-### Prerequisites
-
-- Bun installed (`curl -fsSL https://bun.sh/install | bash`)
-- Node.js 20+ (for compatibility)
-
-### Commands
+## Commands
 
 ```bash
-bun install        # Install dependencies
-bun dev            # Start dev server (http://localhost:3000)
-bun build          # Production build
-bun start          # Start production server
-bun lint           # Run ESLint
-bun typecheck      # Run TypeScript type checking
+bun install
+bun dev              # http://localhost:3000
+bun run build
+bun run start
+bun test             # unit tests
+bun run typecheck    # tsc --noEmit
+bun run lint         # eslint
+bun run db:generate  # regenerate a migration after editing src/db/schema.ts
+bun run db:migrate   # apply migrations (needs DATABASE_URL)
 ```
 
-## Project Configuration
+## Environment Variables
 
-### Next.js Config (`next.config.ts`)
+All optional; the app runs with zero config (demo mode, no DB). See `.env.example`.
 
-- App Router enabled
-- Default settings for flexibility
+- `ANTHROPIC_API_KEY` — enables live execution
+- `LLM_MODEL` (default `claude-opus-4-8`), `LLM_MAX_TOKENS` (default 2048)
+- `DATABASE_URL`, `DATABASE_AUTH_TOKEN` — optional libSQL/Turso
+- `RATE_LIMIT_MAX` (20), `RATE_LIMIT_WINDOW_SECONDS` (60), `MAX_INPUT_LENGTH` (4000)
+- `APP_NAME`, `SITE_URL`
 
-### TypeScript Config (`tsconfig.json`)
+Config is read and validated once in `src/lib/env.ts`; do not read `process.env` elsewhere.
 
-- Strict mode enabled
-- Path alias: `@/*` → `src/*`
-- Target: ESNext
+## Key Configuration
 
-### Tailwind CSS 4 (`postcss.config.mjs`)
-
-- Uses `@tailwindcss/postcss` plugin
-- CSS-first configuration (v4 style)
-
-### ESLint (`eslint.config.mjs`)
-
-- Uses `eslint-config-next`
-- Flat config format
-
-## Key Dependencies
-
-### Production Dependencies
-
-```json
-{
-  "next": "^16.1.3", // Framework
-  "react": "^19.2.3", // UI library
-  "react-dom": "^19.2.3" // React DOM
-}
-```
-
-### Dev Dependencies
-
-```json
-{
-  "typescript": "^5.9.3",
-  "@types/node": "^24.10.2",
-  "@types/react": "^19.2.7",
-  "@types/react-dom": "^19.2.3",
-  "@tailwindcss/postcss": "^4.1.17",
-  "tailwindcss": "^4.1.17",
-  "eslint": "^9.39.1",
-  "eslint-config-next": "^16.0.0"
-}
-```
+- `next.config.ts` — security headers (CSP, HSTS, X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy), `poweredByHeader: false`, `serverExternalPackages` for native/CJS server deps, and `outputFileTracingIncludes` so skill markdown ships with serverless bundles.
+- `tsconfig.json` — strict; excludes `**/*.test.ts` from the app typecheck (Bun runs tests separately).
+- `drizzle.config.ts` — sqlite dialect; migrations in `src/db/migrations`.
 
 ## File Structure
 
 ```
-/
-├── .gitignore              # Git ignore rules
-├── package.json            # Dependencies and scripts
-├── bun.lock                # Bun lockfile
-├── next.config.ts          # Next.js configuration
-├── tsconfig.json           # TypeScript configuration
-├── postcss.config.mjs      # PostCSS (Tailwind) config
-├── eslint.config.mjs       # ESLint configuration
-├── public/                 # Static assets
-│   └── .gitkeep
-└── src/                    # Source code
-    └── app/                # Next.js App Router
-        ├── layout.tsx      # Root layout
-        ├── page.tsx        # Home page
-        ├── globals.css     # Global styles
-        └── favicon.ico     # Site icon
+src/
+├── app/
+│   ├── api/{health,skills,skills/[slug],skills/invoke}/route.ts
+│   ├── page.tsx              # landing (server-rendered)
+│   └── demo/page.tsx         # interactive runner (client)
+├── components/markdown.tsx
+├── db/{index,schema,logging,migrate}.ts + migrations/
+├── lib/{env,skills,llm,llm-helpers,rate-limit,validation}.ts
+└── skills/**/<slug>.md       # SKILL.md source of truth
+.github/workflows/ci.yml       # typecheck + lint + test + build
 ```
-
-## Technical Constraints
-
-### Starting Point
-
-- Minimal structure - expand as needed
-- No database by default (use recipe to add)
-- No authentication by default (add when needed)
-
-### Browser Support
-
-- Modern browsers (ES2020+)
-- No IE11 support
-
-## Performance Considerations
-
-### Image Optimization
-
-- Use Next.js `Image` component for optimization
-- Place images in `public/` directory
-
-### Bundle Size
-
-- Tree-shaking enabled by default
-- Tailwind CSS purges unused styles
-
-### Core Web Vitals
-
-- Server Components reduce client JavaScript
-- Streaming and Suspense for better UX
 
 ## Deployment
 
-### Build Output
+- **Vercel:** import, set env vars, deploy. File tracing bundles the skill markdown.
+- **Node/container:** `bun run build && bun run start`.
+- For analytics, point `DATABASE_URL` at Turso and run `bun run db:migrate` at release.
 
-- Server-rendered pages by default
-- Can be configured for static export
+## Constraints
 
-### Environment Variables
-
-- None required for base template
-- Add as needed for features
-- Use `.env.local` for local development
+- Modern browsers (ES2020+).
+- In-memory rate limiter suits single-instance; use a shared store for multi-instance.

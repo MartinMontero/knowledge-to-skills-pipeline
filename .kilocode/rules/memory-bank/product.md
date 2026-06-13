@@ -1,44 +1,39 @@
-# Product Context: Next.js Starter Template
+# Product Context: Knowledge-to-Skills Pipeline
 
-## Why This Template Exists
+## Why This Exists
 
-Starting a new Next.js project involves boilerplate setup, configuration decisions, and establishing patterns. This template provides a clean, opinionated starting point that eliminates setup friction and establishes best practices from the start. It's optimized for AI-assisted development, where an AI can quickly extend the template based on user requirements.
+Valuable methodologies are locked inside books and guides. This pipeline turns that knowledge into AI agent skills that can be invoked on demand — while keeping a clear, auditable link back to the source so authors are credited (and, in the target architecture, compensated).
 
 ## Problems It Solves
 
-1. **Setup Time**: Eliminates boilerplate configuration (TypeScript, Tailwind, ESLint)
-2. **Decision Fatigue**: Pre-made choices for tooling and patterns
-3. **AI Context**: Memory bank provides persistent context for AI assistants
-4. **Extensibility**: Recipe system for adding common features
-5. **Consistency**: Standardized project structure and conventions
+1. **Access:** methodology-grounded help instead of generic AI answers.
+2. **Attribution:** every response cites the source work and its license.
+3. **Composability:** skills declare dependencies/relationships and can be combined.
+4. **Sustainability (planned):** revenue splits route value back to IP owners.
 
-## How It Should Work (User Flow)
+## How It Works (User Flow)
 
-1. User starts with this template
-2. User describes what they want to build to AI assistant
-3. AI adds pages, components, and features as needed
-4. AI uses recipes for common additions (database, auth)
-5. User previews changes via hot reload
-6. Iterate until satisfied
-7. Deploy
+1. User opens the demo and picks a skill (e.g. *Power Analysis Framework*).
+2. User describes their situation.
+3. The app runs the skill: the skill's markdown grounds the model (or a labelled demo response is produced if no model key is configured).
+4. The response is returned with source attribution.
 
-## Key User Experience Goals
+## Key Experience Goals
 
-- **Zero to Feature Fast**: Get building immediately, no setup required
-- **AI-Friendly**: Memory bank and recipes make AI assistance effective
-- **Flexible Foundation**: Can become any type of application
-- **Best Practices Built-In**: TypeScript strict mode, ESLint, clean structure
+- **Useful by default:** works with zero configuration (demo mode).
+- **Honest:** shipped features and roadmap are clearly distinguished.
+- **Trustworthy:** attribution on every answer; safe, lawful, non-violent guidance.
+- **Fast to extend:** add a `SKILL.md` file and it's live.
 
-## What This Template Provides
+## What It Provides
 
-1. **Clean App Structure**: Single page ready for expansion
-2. **Type Safety**: Full TypeScript setup with strict mode
-3. **Modern Styling**: Tailwind CSS 4 ready to use
-4. **Code Quality**: ESLint configured
-5. **Extensibility**: Recipe system for common features
+1. A filesystem skill registry (`SKILL.md` = source of truth).
+2. Real LLM execution with a deterministic demo fallback.
+3. A hardened public API (validation, rate limiting, security headers).
+4. Optional privacy-preserving invocation analytics.
 
 ## Integration Points
 
-- **Database**: Use add-database recipe for Drizzle + SQLite
-- **Styling**: Tailwind CSS pre-configured
-- **AI Assistance**: Memory bank for context persistence
+- **LLM:** Anthropic by default (`@anthropic-ai/sdk`), configurable via env.
+- **Database:** optional libSQL/SQLite (local file or Turso).
+- **Distribution/payments:** Nostr + Lightning (roadmap).

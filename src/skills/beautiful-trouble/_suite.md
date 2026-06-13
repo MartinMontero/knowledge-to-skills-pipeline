@@ -1,5 +1,11 @@
 # Beautiful Trouble Skill Suite
 
+> **Implementation status:** This manifest describes the full target suite (24 skills).
+> Implemented and invokable today: `culture-jamming`, `power-analysis-framework`,
+> `the-dilemma-action`, `make-the-invisible-visible`. The remaining entries below are
+> the conversion roadmap. The live skill list is derived from the actual `SKILL.md`
+> files at runtime.
+
 ## Suite Metadata
 
 | Property | Value |

@@ -2,75 +2,59 @@
 
 ## Current State
 
-**Project Status**: ✅ Backend Implemented
+**Project Status:** ✅ Production-ready reference implementation
 
-The Knowledge-to-Skills Pipeline now has database schema, API routes, and a working demo interface. The system converts published knowledge (books, guides, toolkits) into composable AI agent skills, delivered through Onyx + Maple AI with IP attribution via Nostr Lightning payments.
+The app converts published knowledge (`SKILL.md` files) into composable, attributed AI agent skills and executes them against a configurable LLM, with a zero-config demo fallback. It is hardened for public deployment: validated input, per-IP rate limiting, security headers, safe markdown rendering, and optional privacy-preserving analytics.
 
-## Recently Completed
+## What works today
 
-- [x] Analyze the Knowledge-to-Skills Pipeline specification document
-- [x] Create landing page presenting the pipeline architecture
-- [x] Build skill suite showcase section with Beautiful Trouble as reference
-- [x] Add business model explanation (SkillStream & SkillZap)
-- [x] Implement skill manifest structure and SKILL.md template
-- [x] Create sample SKILL.md (culture-jamming from Beautiful Trouble)
-- [x] Create skill index registry (src/skills/index.json)
-- [x] Create suite manifest (_suite.md)
-- [x] Pass typecheck and lint validation
-- [x] Add lucide-react dependency for icons
-- [x] Add database with Drizzle ORM (users, skills, payments, invocations)
-- [x] Create API routes for skills (GET /api/skills, POST /api/skills/invoke)
-- [x] Build demo page at /demo with skill invocation interface
+- **Filesystem skill registry** (`src/lib/skills.ts`) — `SKILL.md` files are the source of truth; frontmatter validated with zod; bodies used as model context.
+- **Live skill execution** (`src/lib/llm.ts`) via the Anthropic SDK (`claude-opus-4-8` default, configurable), grounded in the skill's markdown, with a deterministic **demo mode** when no API key is set.
+- **Hardened API** — `GET /api/health`, `GET /api/skills`, `GET /api/skills/[slug]`, `POST /api/skills/invoke`; validation, rate limiting, rate-limit/Retry-After headers, sanitized errors.
+- **Optional persistence** (libSQL/SQLite, `src/db/`) — logs invocation **metadata only** (no raw prompt/response text).
+- **Honest UI** — landing page shows real skill counts and separates shipped features from roadmap; demo page renders markdown safely and shows live/demo state + attribution.
+- **Quality gates** — 25 unit tests (`bun test`), typecheck, lint, production build, GitHub Actions CI.
 
-## Current Structure
+## On the roadmap (not active)
 
-| File/Directory | Purpose | Status |
-|----------------|---------|--------|
-| `src/app/page.tsx` | Landing page with pipeline overview | ✅ Built |
-| `src/skills/index.json` | Skill registry with suite metadata | ✅ Built |
-| `src/skills/beautiful-trouble/_suite.md` | Suite manifest with composability | ✅ Built |
-| `src/skills/beautiful-trouble/tactics/culture-jamming.md` | Sample SKILL.md template | ✅ Built |
+Nostr distribution, Onyx vaults, and Lightning micropayments with automatic revenue splits — described as the target architecture, clearly labelled as planned.
 
-## Current Focus
+## Key files
 
-This is a complex multi-phase project. Initial implementation includes:
-1. Landing page showcasing the pipeline
-2. Sample skill structure (Beautiful Trouble reference implementation)
-3. Skill registry and manifest system
+| File/Directory | Purpose |
+|----------------|---------|
+| `src/lib/env.ts` | Validated config + feature flags |
+| `src/lib/skills.ts` | Filesystem skill registry |
+| `src/lib/llm.ts` / `llm-helpers.ts` | Execution engine + pure helpers (tested) |
+| `src/lib/rate-limit.ts`, `validation.ts` | Per-IP limiter, zod schemas |
+| `src/db/` | Optional libSQL persistence + migrations |
+| `src/app/api/**` | Health + skills + invoke routes |
+| `src/components/markdown.tsx` | Safe markdown renderer |
+| `src/skills/**` | `SKILL.md` files (4 Beautiful Trouble skills) |
+| `next.config.ts` | Security headers, CSP, file tracing |
 
-## Key Concepts Implemented
+## Available skills (Beautiful Trouble suite)
 
-### Technology Stack
-- **Onyx**: Nostr-native encrypted knowledge vault
-- **Maple AI**: Privacy-first inference engine
-- **Nostr**: Decentralized relay network
-- **Lightning**: Native micropayments (Zaps)
+- `culture-jamming` (tactic)
+- `power-analysis-framework` (theory)
+- `the-dilemma-action` (principle)
+- `make-the-invisible-visible` (principle)
 
-### Business Models
-- **SkillStream**: Subscription + Revenue Share ($12/month)
-- **SkillZap**: Pay-per-invocation (25-500 sats)
+## Tech changes from the original prototype
 
-### Attribution System
-- Revenue split: 70% IP owner, 20% skill author, 10% platform
-- NIP-57 Zap receipts for transparent payments
+- Removed the sandbox-locked `@kilocode/app-builder-db`; replaced with portable **libSQL** (local file or Turso).
+- Added `@anthropic-ai/sdk`, `gray-matter`, `react-markdown`, `zod`, and self-hosted `geist` fonts (no build-time Google Fonts fetch).
+- Skills moved from hardcoded mock data to a real filesystem registry; invocation moved from random strings to real LLM execution with a demo fallback.
 
 ## Session History
 
 | Date | Changes |
 |------|---------|
-| 2026-03-03 | Initial implementation: landing page, skill structure, sample SKILL.md |
-| 2026-03-03 | Add database schema, API routes, and demo page |
-| 2026-03-03 | Fix database configuration for build without environment variables |
-| 2026-03-03 | Add placeholder migration script for build without DB |
+| 2026-03-03 | Initial prototype: landing page, mock API, sandbox DB |
+| 2026-06-13 | Production hardening: real skill registry + LLM execution, libSQL, security headers, rate limiting, validation, safe markdown, tests, CI, docs; honest copy |
 
-## Next Steps (Future Phases)
+## Next steps
 
-From the specification document, the full roadmap includes:
-- Phase 1: Foundation (Onyx fork, Maple integration)
-- Phase 2: Payment integration (NIP-57 Zaps, revenue splits)
-- Phase 3: Scale pipeline (10+ sources)
-- Phase 4: Ecosystem (community submissions)
-
-## Dependencies Added
-
-- `lucide-react` for icon components
+- Author the remaining Beautiful Trouble skills toward the 24-skill target.
+- Add Nostr publication and Lightning payout integration (roadmap).
+- Back the rate limiter with a shared store (Redis/Upstash) for multi-instance deployments.
