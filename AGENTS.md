@@ -39,6 +39,6 @@ Always run `bun run typecheck && bun run lint && bun test` before committing.
 - Never expose secrets to the client or leak SDK error internals to API responses.
 - Keep the landing page honest: separate shipped features from roadmap items.
 
-## Memory bank
+## Project docs
 
-After significant changes, update `.kilocode/rules/memory-bank/context.md` (and other memory-bank files when architecture/tech/goals change).
+Deeper documentation lives in `docs/` (`brief`, `product`, `architecture`, `tech`, `status`). After significant changes, update `docs/status.md`, and the others when architecture, tech stack, or goals change.

@@ -1,4 +1,4 @@
-# Active Context: Knowledge-to-Skills Pipeline
+# Project Status: Knowledge-to-Skills Pipeline
 
 ## Current State
 
@@ -52,6 +52,7 @@ Nostr distribution, Onyx vaults, and Lightning micropayments with automatic reve
 |------|---------|
 | 2026-03-03 | Initial prototype: landing page, mock API, sandbox DB |
 | 2026-06-13 | Production hardening: real skill registry + LLM execution, libSQL, security headers, rate limiting, validation, safe markdown, tests, CI, docs; honest copy |
+| 2026-06-13 | De-Kilo: moved project docs to `docs/` and removed the `.kilocode/` tooling (memory-bank conventions + sandbox recipe). The app was already Kilo-independent. |
 
 ## Next steps
 
