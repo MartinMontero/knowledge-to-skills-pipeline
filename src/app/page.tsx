@@ -1,35 +1,36 @@
-import type { Metadata } from "next";
 import { ArrowRight, Zap, BookOpen, Users, Shield, Globe, Link2, CreditCard, Layers, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { listSkills } from "@/lib/skills";
 
-export const metadata: Metadata = {
-  title: "Knowledge-to-Skills Pipeline | homebase civic lab",
-  description: "Converting published knowledge into composable AI agent skills — with IP attribution and revenue sharing via Nostr Lightning payments.",
-};
+const GITHUB_URL = "https://github.com/martinmontero/knowledge-to-skills-pipeline";
 
-const skillSuites = [
+const suiteTargets = [
   {
+    slug: "beautiful-trouble",
     name: "Beautiful Trouble",
     author: "Andrew Boyd & Dave Oswald Mitchell",
     license: "CC-BY-SA-4.0",
-    skills: 24,
-    description: "A toolbox for revolution — tactics, principles, and theories for creative activism",
+    target: 24,
+    description: "A toolbox for revolution — tactics, principles, and theories for creative activism.",
     status: "Reference Implementation",
   },
   {
+    slug: "rules-for-radicals",
     name: "Rules for Radicals",
     author: "Saul Alinsky",
     license: "Standard Copyright",
-    skills: 15,
-    description: "Pragmatic radicalism — strategies and tactics for community organizing",
-    status: "Phase 1",
+    target: 15,
+    description: "Pragmatic radicalism — strategies and tactics for community organizing.",
+    status: "Roadmap",
   },
   {
+    slug: "facilitators-guide",
     name: "Facilitator's Guide",
     author: "Sam Kaner",
     license: "Standard Copyright",
-    skills: 18,
-    description: "Participatory decision-making frameworks for facilitators",
-    status: "Phase 1",
+    target: 18,
+    description: "Participatory decision-making frameworks for facilitators.",
+    status: "Roadmap",
   },
 ];
 
@@ -37,26 +38,30 @@ const technologies = [
   {
     name: "Onyx",
     icon: BookOpen,
-    description: "Nostr-native encrypted knowledge vault. Skills are just markdown notes in your vault.",
+    description: "Nostr-native encrypted knowledge vault. Skills are markdown notes in your vault.",
     color: "bg-orange-500",
+    planned: true,
   },
   {
-    name: "Maple AI",
+    name: "Pluggable LLM",
     icon: Sparkles,
-    description: "Privacy-first inference engine. Zero data retention, E2E encrypted, open-source models.",
+    description: "Skills are executed by a configurable language-model provider. Privacy-first inference is the goal.",
     color: "bg-purple-500",
+    planned: false,
   },
   {
     name: "Nostr",
     icon: Link2,
-    description: "Decentralized relay network. No platform lock-in, censorship-resistant skill distribution.",
+    description: "Decentralized relay network for censorship-resistant skill distribution.",
     color: "bg-blue-500",
+    planned: true,
   },
   {
     name: "Lightning",
     icon: Zap,
-    description: "Native micropayments via Zaps. Real-time revenue splits to IP owners per skill invocation.",
+    description: "Native micropayments via Zaps for real-time revenue splits to IP owners.",
     color: "bg-yellow-500",
+    planned: true,
   },
 ];
 
@@ -78,7 +83,7 @@ const businessModels = [
     name: "SkillZap",
     subtitle: "Pay-Per-Invocation",
     icon: CreditCard,
-    price: "25-500 sats/invocation",
+    price: "25–500 sats/invocation",
     description: "Direct value exchange. Each skill invocation triggers real-time Lightning Zap splits.",
     features: [
       "Pay only for what you use",
@@ -90,6 +95,13 @@ const businessModels = [
 ];
 
 export default function Home() {
+  const skills = listSkills();
+  const availableBySuite = new Map<string, number>();
+  for (const skill of skills) {
+    availableBySuite.set(skill.suite.slug, (availableBySuite.get(skill.suite.slug) ?? 0) + 1);
+  }
+  const totalAvailable = skills.length;
+
   return (
     <div className="min-h-screen bg-stone-50">
       {/* Hero Section */}
@@ -99,7 +111,7 @@ export default function Home() {
           <div className="absolute top-20 left-10 w-72 h-72 bg-orange-500 rounded-full blur-3xl" />
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500 rounded-full blur-3xl" />
         </div>
-        
+
         <nav className="relative z-10 max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-purple-500 rounded-xl flex items-center justify-center">
@@ -108,11 +120,12 @@ export default function Home() {
             <span className="text-xl font-bold tracking-tight">homebase</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-stone-300">
-            <a href="#pipeline" className="hover:text-white transition-colors">Pipeline</a>
-            <a href="#suites" className="hover:text-white transition-colors">Skill Suites</a>
-            <a href="#business" className="hover:text-white transition-colors">Business Models</a>
-            <a href="#attribution" className="hover:text-white transition-colors">Attribution</a>
-            <a href="/demo" className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors">Try Demo</a>
+            <a href="#pipeline" className="hidden sm:inline hover:text-white transition-colors">Pipeline</a>
+            <a href="#suites" className="hidden sm:inline hover:text-white transition-colors">Skill Suites</a>
+            <a href="#attribution" className="hidden sm:inline hover:text-white transition-colors">Attribution</a>
+            <Link href="/demo" className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors">
+              Try Demo
+            </Link>
           </div>
         </nav>
 
@@ -120,7 +133,7 @@ export default function Home() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 text-sm font-medium mb-6">
               <Zap className="w-4 h-4" />
-              Knowledge-to-Skills Pipeline v1.0
+              Knowledge-to-Skills Pipeline · Reference Implementation
             </div>
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
               Turn books into
@@ -129,25 +142,28 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-xl text-stone-300 mb-8 leading-relaxed max-w-2xl">
-              A system for converting published knowledge — books, guides, toolkits — into 
-              composable AI agent skills. Delivered through Onyx + Maple AI, with IP attribution 
-              and revenue sharing via Nostr Lightning payments.
+              A system for converting published knowledge — books, guides, toolkits — into composable AI agent skills,
+              with IP attribution carried through every invocation. This open reference implementation runs real skills
+              today; decentralized distribution and Lightning payouts are on the roadmap.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a
-                href="#suites"
+              <Link
+                href="/demo"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors"
               >
-                Explore Skill Suites
+                Try the live demo
                 <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
               <a
                 href="#pipeline"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-stone-800 hover:bg-stone-700 text-white font-semibold rounded-lg transition-colors"
               >
-                How It Works
+                How it works
               </a>
             </div>
+            <p className="mt-6 text-sm text-stone-400">
+              {totalAvailable} skill{totalAvailable === 1 ? "" : "s"} available now · Open reference implementation
+            </p>
           </div>
         </div>
       </header>
@@ -158,8 +174,8 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-stone-900 mb-4">The Conversion Pipeline</h2>
             <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-              A repeatable, scalable process for transforming published knowledge into 
-              AI-ready agent skills with full IP attribution.
+              A repeatable process for transforming published knowledge into AI-ready agent skills with full IP
+              attribution.
             </p>
           </div>
 
@@ -170,7 +186,7 @@ export default function Home() {
               { step: 3, title: "Skill Architecture", desc: "Design taxonomy, composability relationships, triggers" },
               { step: 4, title: "SKILL.md Generation", desc: "Write frontmatter, body templates, references, assets" },
               { step: 5, title: "Quality Validation", desc: "Human review, test activations, legal clearance" },
-              { step: 6, title: "Publication", desc: "GitHub, Nostr relays, Onyx vault, skill index" },
+              { step: 6, title: "Publication", desc: "GitHub today; Nostr relays and Onyx vaults on the roadmap" },
             ].map((item) => (
               <div key={item.step} className="relative group">
                 <div className="p-6 bg-stone-50 rounded-2xl border border-stone-200 hover:border-orange-300 transition-colors h-full">
@@ -195,7 +211,8 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">The Technology Stack</h2>
             <p className="text-lg text-stone-400 max-w-2xl mx-auto">
-              Built on open protocols, open-source AI, and open licensing. No single company controls the ecosystem.
+              Designed around open protocols, open-source AI, and open licensing. Skill execution works today; items
+              marked <span className="text-stone-300 font-medium">Planned</span> are part of the target architecture.
             </p>
           </div>
 
@@ -205,7 +222,14 @@ export default function Home() {
                 <div className={`w-12 h-12 ${tech.color} rounded-xl flex items-center justify-center mb-4`}>
                   <tech.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{tech.name}</h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-xl font-semibold">{tech.name}</h3>
+                  {tech.planned ? (
+                    <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-stone-700 text-stone-300">Planned</span>
+                  ) : (
+                    <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-green-500/20 text-green-300">Live</span>
+                  )}
+                </div>
                 <p className="text-stone-400 text-sm">{tech.description}</p>
               </div>
             ))}
@@ -219,48 +243,51 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-stone-900 mb-4">Skill Suites</h2>
             <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-              Published knowledge converted into composable AI agent skills. 
-              Beautiful Trouble serves as the reference implementation.
+              Published knowledge converted into composable AI agent skills. Beautiful Trouble is the reference
+              implementation; counts show skills available today versus the full conversion target.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {skillSuites.map((suite) => (
-              <div key={suite.name} className="bg-white rounded-2xl border border-stone-200 overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full mb-2 ${
-                        suite.status === "Reference Implementation" 
-                          ? "bg-green-100 text-green-700" 
-                          : "bg-orange-100 text-orange-700"
-                      }`}>
-                        {suite.status}
-                      </span>
-                      <h3 className="text-xl font-bold text-stone-900">{suite.name}</h3>
-                      <p className="text-sm text-stone-500">{suite.author}</p>
+            {suiteTargets.map((suite) => {
+              const available = availableBySuite.get(suite.slug) ?? 0;
+              return (
+                <div key={suite.slug} className="bg-white rounded-2xl border border-stone-200 overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <span
+                          className={`inline-block px-2 py-1 text-xs font-medium rounded-full mb-2 ${
+                            suite.status === "Reference Implementation"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-stone-100 text-stone-600"
+                          }`}
+                        >
+                          {suite.status}
+                        </span>
+                        <h3 className="text-xl font-bold text-stone-900">{suite.name}</h3>
+                        <p className="text-sm text-stone-500">{suite.author}</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-3xl font-bold text-orange-500">{available}</div>
+                        <div className="text-xs text-stone-500">of {suite.target} skills</div>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-3xl font-bold text-orange-500">{suite.skills}</div>
-                      <div className="text-xs text-stone-500">skills</div>
+                    <p className="text-stone-600 mb-4">{suite.description}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-stone-500">{suite.license}</span>
+                      {available > 0 ? (
+                        <Link href="/demo" className="text-orange-600 hover:text-orange-700 font-medium inline-flex items-center gap-1">
+                          Try skills <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      ) : (
+                        <span className="text-stone-400">Coming soon</span>
+                      )}
                     </div>
-                  </div>
-                  <p className="text-stone-600 mb-4">{suite.description}</p>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-stone-500">{suite.license}</span>
-                    <a href="#" className="text-orange-600 hover:text-orange-700 font-medium inline-flex items-center gap-1">
-                      View skills <ArrowRight className="w-4 h-4" />
-                    </a>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <a href="#" className="inline-flex items-center gap-2 text-orange-600 font-medium hover:gap-3 transition-all">
-              View all 15+ source candidates in the pipeline <ArrowRight className="w-4 h-4" />
-            </a>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -271,8 +298,8 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-stone-900 mb-4">Business Models</h2>
             <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-              Two complementary models serving different user populations. Both share the same 
-              attribution chain — IP owners get paid when their knowledge is used.
+              Two complementary models share the same attribution chain — IP owners get paid when their knowledge is
+              used. These are the intended commercial models; payments are not active in this reference implementation.
             </p>
           </div>
 
@@ -311,10 +338,11 @@ export default function Home() {
             <div>
               <h2 className="text-4xl font-bold mb-6">IP Attribution & Revenue Sharing</h2>
               <p className="text-lg text-stone-300 mb-8">
-                Every skill invocation produces a complete, cryptographically verifiable attribution chain. 
-                IP owners receive automatic Lightning payments — no intermediaries, no delays.
+                Every skill carries a complete attribution chain back to its source work. In the designed system, each
+                invocation produces a cryptographically verifiable record and an automatic Lightning payout — no
+                intermediaries.
               </p>
-              
+
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <div className="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -323,12 +351,12 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold mb-1">Transparent Attribution</h3>
                     <p className="text-sm text-stone-400">
-                      Every AI response includes source citations. Zap receipts (NIP-57) are published 
-                      to Nostr relays — publicly auditable.
+                      Every response includes source citations. Zap receipts (NIP-57) are published to Nostr relays —
+                      publicly auditable.
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex gap-4">
                   <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
                     <Zap className="w-5 h-5 text-purple-400" />
@@ -336,12 +364,12 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold mb-1">Real-Time Revenue Splits</h3>
                     <p className="text-sm text-stone-400">
-                      Zap splits defined in skill metadata: 70% IP owner, 20% skill author, 10% platform. 
-                      Automatic distribution per invocation.
+                      Splits defined in skill metadata: 70% IP owner, 20% skill author, 10% platform. Automatic
+                      distribution per invocation.
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex gap-4">
                   <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
                     <Globe className="w-5 h-5 text-blue-400" />
@@ -349,8 +377,7 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold mb-1">License Compatibility</h3>
                     <p className="text-sm text-stone-400">
-                      CC-BY-SA → ShareAlike derivatives. Commercial licenses negotiated for 
-                      All Rights Reserved sources. CC-BY-NC requires separate agreement.
+                      CC-BY-SA → ShareAlike derivatives. Commercial licenses negotiated for All Rights Reserved sources.
                     </p>
                   </div>
                 </div>
@@ -358,7 +385,7 @@ export default function Home() {
             </div>
 
             <div className="bg-stone-800 rounded-2xl p-6 font-mono text-sm">
-              <div className="text-stone-500 mb-4">{'// Attribution chain for single invocation'}</div>
+              <div className="text-stone-500 mb-4">{"// Illustrative attribution chain for one invocation"}</div>
               <div className="space-y-4">
                 <div className="p-3 bg-stone-700/50 rounded-lg">
                   <div className="text-orange-400 mb-1">1. SOURCE WORK</div>
@@ -379,17 +406,16 @@ export default function Home() {
                 <div className="p-3 bg-stone-700/50 rounded-lg">
                   <div className="text-blue-400 mb-1">3. INVOCATION</div>
                   <div className="text-stone-300">
-                    Timestamp: 2026-02-23T14:30:00Z<br />
-                    Payment: 300 sats<br />
-                    Zap: nevent1...
+                    Payment: 300 sats (planned)<br />
+                    Zap: nevent1… (planned)
                   </div>
                 </div>
                 <div className="p-3 bg-stone-700/50 rounded-lg">
-                  <div className="text-green-400 mb-1">4. DISTRIBUTION</div>
+                  <div className="text-green-400 mb-1">4. DISTRIBUTION (planned)</div>
                   <div className="text-stone-300">
-                    IP Owner: 210 sats → npub1_bt...<br />
-                    Author: 60 sats → npub1_homebase...<br />
-                    Platform: 30 sats → npub1_platform...
+                    IP Owner: 210 sats (70%)<br />
+                    Author: 60 sats (20%)<br />
+                    Platform: 30 sats (10%)
                   </div>
                 </div>
               </div>
@@ -403,34 +429,25 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">Built for the civic renaissance</h2>
           <p className="text-xl text-white/80 max-w-2xl mx-auto mb-8">
-            Knowledge should be open, attributed, and compensated. Join us in building 
-            the open skill ecosystem for civic technology.
+            Knowledge should be open, attributed, and compensated. Join us in building the open skill ecosystem for civic
+            technology.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
+            <Link
               href="/demo"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-stone-900 font-semibold rounded-lg hover:bg-stone-100 transition-colors"
             >
               <Sparkles className="w-5 h-5" />
               Try Demo
-            </a>
+            </Link>
             <a
-              href="https://github.com/homebase-civic-lab"
+              href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900/30 text-white font-semibold rounded-lg hover:bg-stone-900/50 transition-colors backdrop-blur-sm"
             >
               <Globe className="w-5 h-5" />
               View on GitHub
-            </a>
-            <a
-              href="https://nostr.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900/30 text-white font-semibold rounded-lg hover:bg-stone-900/50 transition-colors backdrop-blur-sm"
-            >
-              <Zap className="w-5 h-5" />
-              Follow on Nostr
             </a>
           </div>
         </div>
@@ -446,9 +463,9 @@ export default function Home() {
               </div>
               <span className="font-semibold text-stone-300">homebase civic lab</span>
             </div>
-            <p className="text-sm">
-              A civic renaissance lab for downtown Nanaimo, BC. 
-              Powered by Nostr, Maple AI, and the belief that knowledge should be open.
+            <p className="text-sm max-w-md md:text-right">
+              A civic renaissance lab for downtown Nanaimo, BC. Skill content derived from works under their respective
+              licenses; see each skill&rsquo;s attribution.
             </p>
           </div>
         </div>

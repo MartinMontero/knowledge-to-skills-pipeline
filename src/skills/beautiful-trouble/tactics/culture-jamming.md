@@ -4,6 +4,9 @@ slug: culture-jamming
 suite: beautiful-trouble
 category: tactic
 version: 1.0.0
+description: Subvert corporate and political messaging through ironic, creative counter-narratives.
+price_per_use: 100
+subscription_price: 500
 
 # Trigger Description - When to invoke this skill
 trigger: |
